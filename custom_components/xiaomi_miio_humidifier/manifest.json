@@ -1,0 +1,17 @@
+{
+  "domain": "xiaomi_miio_humidifier",
+  "name": "Xiaomi Mi Smart Humidifier/Dehumidifier",
+  "config_flow": true,
+  "version": "2022.6.7",
+  "iot_class": "local_polling",
+  "documentation": "https://github.com/tsunglung/xiaomihumidifier",
+  "issue_tracker": "https://github.com/tsunglung/xiaomihumidifier/issues",
+  "requirements": [
+    "construct>=2.10.56",
+    "python-miio>=0.5.11"
+  ],
+  "dependencies": [],
+  "codeowners": [
+    "@tsunglung"
+  ]
+}
