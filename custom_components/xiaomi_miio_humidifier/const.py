@@ -14,6 +14,12 @@ from homeassistant.components.switch import (
     SwitchEntityDescription,
 )
 
+from homeassistant.const import (
+    PERCENTAGE,
+    TEMP_CELSIUS,
+    TIME_SECONDS
+)
+
 DEFAULT_NAME = "Xiaomi Smart Humidifier/Dehumidifier"
 DOMAIN = "xiaomi_miio_humidifier"
 DOMAINS = ["humidifier", "sensor", "switch"]
@@ -73,18 +79,21 @@ HUMIDIFIER_SENSORS: tuple[XiaomiHumidifierSensorDescription, ...] = (
     XiaomiHumidifierSensorDescription(
         key="temperature",
         name="Temperature",
+        native_unit_of_measurement=TEMP_CELSIUS,
         state_class=SensorStateClass.MEASUREMENT,
         icon="mdi:thermometer"
     ),
     XiaomiHumidifierSensorDescription(
         key="relative_humidity",
         name="Relative Humidity",
+        native_unit_of_measurement=PERCENTAGE,
         state_class=SensorStateClass.MEASUREMENT,
         icon="mdi:water-percent"
     ),
     XiaomiHumidifierSensorDescription(
         key="dry_left_time",
         name="Dry Left Time",
+        native_unit_of_measurement=TIME_SECONDS,
         state_class=SensorStateClass.MEASUREMENT,
         icon="mdi:timelapse"
     ),
