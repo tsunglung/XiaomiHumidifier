@@ -14,6 +14,11 @@ from homeassistant.components.switch import (
     SwitchEntityDescription,
 )
 
+from homeassistant.components.button import (
+    ButtonDeviceClass,
+    ButtonEntityDescription,
+)
+
 from homeassistant.const import (
     PERCENTAGE,
     TEMP_CELSIUS,
@@ -22,7 +27,7 @@ from homeassistant.const import (
 
 DEFAULT_NAME = "Xiaomi Smart Humidifier/Dehumidifier"
 DOMAIN = "xiaomi_miio_humidifier"
-DOMAINS = ["humidifier", "sensor", "switch"]
+DOMAINS = ["humidifier", "sensor", "switch", "button"]
 DATA_KEY = "xiaomi_humidifier_data"
 DATA_STATE = "state"
 DATA_DEVICE = "device"
@@ -125,5 +130,18 @@ HUMIDIFIER_SWITCHS_V1: tuple[SwitchEntityDescription, ...] = (
         key="alarm",
         name="Indicator Buzzer",
         device_class=SwitchDeviceClass.SWITCH,
+    )
+)
+
+HUMIDIFIER_BUTTONS_V1: tuple[ButtonEntityDescription, ...] = (
+    ButtonEntityDescription(
+        key="reset-filter",
+        name="Reset Filter",
+        device_class=ButtonDeviceClass.RESTART,
+    ),
+    ButtonEntityDescription(
+        key="loop-mode",
+        name="Loop Mode",
+        device_class=ButtonDeviceClass.RESTART,
     )
 )

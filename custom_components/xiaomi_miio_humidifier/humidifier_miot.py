@@ -34,6 +34,9 @@ MIOT_MAPPING = {
         "dry_after_off": {"siid": 7, "piid": 2},  # read, notify, write
         "dry_left_time": {"siid": 7, "piid": 3},  # read, notify
         "is_warming_up": {"siid": 7, "piid": 4},  # read, notify
+        "toggle": {"siid": 7, "aiid": 1},
+        "loop-mode": {"siid": 7, "aiid": 2},
+        "reset-filter": {"siid": 7, "aiid": 3},
     },
     MODEL_DMAKER_DERH_22L: {
         "status": {"siid": 2, "piid": 1},  # read, notify, write
@@ -50,6 +53,9 @@ MIOT_MAPPING = {
         "dry_after_off": {"siid": 7, "piid": 2},  # read, notify, write
         "dry_left_time": {"siid": 7, "piid": 3},  # read, notify
         "is_warming_up": {"siid": 7, "piid": 4},  # read, notify
+        "toggle": {"siid": 7, "aiid": 1},
+        "loop-mode": {"siid": 7, "aiid": 2},
+        "reset-filter": {"siid": 7, "aiid": 3},
     }
 }
 
@@ -269,6 +275,15 @@ class HumidifierMiot(MiotDevice):
         """Set Switch."""
 
         return self.set_property(switch, False)
+
+    @command(
+        click.argument("action", type=str),
+        default_output=format_output("Calling Action {action}"),
+    )
+    def call_action(self, action: str):
+        """Calling Action."""
+
+        return self.call_action(action, False)
 
     def on(self):
         """ Turn on """
