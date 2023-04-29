@@ -15,6 +15,7 @@ Credits: Thanks to [Rytilahti](https://github.com/rytilahti/python-miio) for all
 | --------------------------- | ---------------------- | --------- |
 | Xiaomi Smart Humidifier/Dehumidifier    | dmaker.derh.22ht       | |
 | Xiaomi Smart Humidifier/Dehumidifier    | dmaker.derh.22l      | |
+| Xiaomi Smart Humidifier/Dehumidifier    | dmaker.derh.50l      | |
 
 ## Features
 
