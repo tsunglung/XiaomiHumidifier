@@ -21,7 +21,7 @@ Credits: Thanks to [Rytilahti](https://github.com/rytilahti/python-miio) for all
 
 ### Xiaomi Smart Dehumidifier
 
-Supported models: `dmaker.derh.22ht`, `dmaker.derh.22l`
+Supported models: `dmaker.derh.22ht`, `dmaker.derh.22l`, `dmaker.derh.50l`
 
 * Power (on, off)
 * Mode (Smart, Sleep, Clothes Drying)
