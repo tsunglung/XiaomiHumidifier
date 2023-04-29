@@ -1,5 +1,5 @@
 {
-  "name": "Xiaomi Smart Humidifier/Dehumidifier Integration",
+  "name": "Xiaomi Smart Humidifier/Dehumidifier Integration (Fork)",
   "content_in_root": false,
   "render_readme": true,
   "iot_class": "local_polling"
