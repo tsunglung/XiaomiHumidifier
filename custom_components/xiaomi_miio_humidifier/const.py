@@ -80,7 +80,6 @@ HUMIDIFIER_SENSORS: tuple[XiaomiHumidifierSensorDescription, ...] = (
     XiaomiHumidifierSensorDescription(
         key="system_status",
         name="System Status",
-        state_class=SensorStateClass.MEASUREMENT,
         icon="mdi:chip"
     ),
     XiaomiHumidifierSensorDescription(
