@@ -276,15 +276,6 @@ class HumidifierMiot(MiotDevice):
 
         return self.set_property(switch, False)
 
-    @command(
-        click.argument("action", type=str),
-        default_output=format_output("Calling Action {action}"),
-    )
-    def call_action(self, action: str):
-        """Calling Action."""
-
-        return self.call_action(action, False)
-
     def on(self):
         """ Turn on """
         return self.set_property("status", True)
