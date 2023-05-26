@@ -110,9 +110,12 @@ class XiaomiHumidifierButton(ButtonEntity):
                 partial(func, *args, **kwargs)
             )
 
-            _LOGGER.debug("Response received from humidifier: %s", result)
-
-            return result[0].get('code', -1) == 0
+            if isinstance(result, list):
+                return result[0].get('code', -1) == 0
+            elif isinstance(result, dict):
+                return result.get('code', -1) == 0
+            else:
+                return False
         except DeviceException as exc:
             if self._available:
                 _LOGGER.error(mask_error, exc)
@@ -120,10 +123,10 @@ class XiaomiHumidifierButton(ButtonEntity):
 
             return False
 
-    def press(self):
+    async def async_press(self) -> None:
         """Press the button."""
-        self._try_command(
-            "Turning the humidifier off failed.",
+        ret = await self._try_command(
+            "Press the humidifier button failed.",
             self._humidifier.call_action,
             self._attr)
 
