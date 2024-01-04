@@ -21,8 +21,8 @@ from homeassistant.components.button import (
 
 from homeassistant.const import (
     PERCENTAGE,
-    TEMP_CELSIUS,
-    TIME_SECONDS
+    UnitOfTemperature,
+    UnitOfTime
 )
 
 DEFAULT_NAME = "Xiaomi Smart Humidifier/Dehumidifier"
@@ -85,7 +85,7 @@ HUMIDIFIER_SENSORS: tuple[XiaomiHumidifierSensorDescription, ...] = (
     XiaomiHumidifierSensorDescription(
         key="temperature",
         name="Temperature",
-        native_unit_of_measurement=TEMP_CELSIUS,
+        native_unit_of_measurement=UnitOfTemperature.CELSIUS,
         state_class=SensorStateClass.MEASUREMENT,
         icon="mdi:thermometer"
     ),
@@ -99,7 +99,7 @@ HUMIDIFIER_SENSORS: tuple[XiaomiHumidifierSensorDescription, ...] = (
     XiaomiHumidifierSensorDescription(
         key="dry_left_time",
         name="Dry Left Time",
-        native_unit_of_measurement=TIME_SECONDS,
+        native_unit_of_measurement=UnitOfTime.SECONDS,
         state_class=SensorStateClass.MEASUREMENT,
         icon="mdi:timelapse"
     ),

@@ -14,6 +14,7 @@ from homeassistant.components.humidifier import (
 from homeassistant.components.humidifier.const import HumidifierEntityFeature
 from homeassistant.config_entries import SOURCE_IMPORT
 from homeassistant.const import (
+    CONF_DEVICE,
     CONF_HOST,
     CONF_TOKEN,
     CONF_MAC
@@ -22,8 +23,7 @@ import homeassistant.helpers.config_validation as cv
 from homeassistant.helpers import device_registry as dr
 from homeassistant.util import slugify
 from homeassistant.components.xiaomi_miio.const import (
-    CONF_DEVICE,
-    CONF_FLOW_TYPE,
+    CONF_FLOW_TYPE
 )
 from .humidifier_miot import PowerMode_V1
 
