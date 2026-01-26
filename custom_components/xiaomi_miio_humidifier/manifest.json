@@ -1,5 +1,5 @@
 {
-  "domain": "xiaomi_miio_humidifier",
+  "domain": "xiaomi_home",
   "name": "Xiaomi Mi Smart Humidifier/Dehumidifier",
   "config_flow": true,
   "version": "2022.6.7",
