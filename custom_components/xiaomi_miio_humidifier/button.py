@@ -79,7 +79,7 @@ class XiaomiHumidifierButton(ButtonEntity):
     @property
     def unique_id(self):
         """Return the unique of the button."""
-        return "{}_{}".format(self._name, self.entity_description.key)
+        return "{}_{}".format(self._unique_id, self.entity_description.key)
 
     def friendly_name(self):
         """Return the friendly name of the button."""
