@@ -14,6 +14,7 @@ from .const import (
     MODEL_DMAKER_DERH_22HT,
     MODEL_DMAKER_DERH_22L,
     MODEL_XIAOMI_DERH_LITE,
+    MODEL_XIAOMI_DERH_13L,
 )
 
 _LOGGER = logging.getLogger(__name__)
@@ -59,6 +60,24 @@ MIOT_MAPPING = {
         "reset-filter": {"siid": 7, "aiid": 3},
     },
     MODEL_XIAOMI_DERH_LITE: {
+        "status": {"siid": 2, "piid": 1},  # read, notify, write (on)
+        "device_fault": {"siid": 2, "piid": 2},  # read, notify (fault)
+        "mode": {"siid": 2, "piid": 3},  # read, notify, write
+        "target_humidity": {"siid": 2, "piid": 5},  # read, notify, write
+        "relative_humidity": {"siid": 3, "piid": 1},  # read, notify
+        "temperature": {"siid": 3, "piid": 2},  # read, notify
+        "alarm": {"siid": 4, "piid": 1},  # read, notify, write
+        "indicator_light": {"siid": 5, "piid": 1},  # read, notify, write (on)
+        "light_mode": {"siid": 5, "piid": 2},  # read, notify, write (mode)
+        "physical_controls_locked": {"siid": 6, "piid": 1},  # read, notify, write
+        "dry_after_off": {"siid": 7, "piid": 1},  # read, notify, write
+        "dry_left_time": {"siid": 7, "piid": 2},  # read, notify
+        "is_warming_up": {"siid": 7, "piid": 3},  # read, notify
+        "toggle": {"siid": 7, "aiid": 1},
+        "loop-mode": {"siid": 7, "aiid": 2},
+        "reset-filter": {"siid": 7, "aiid": 3},
+    },
+    MODEL_XIAOMI_DERH_13L: {
         "status": {"siid": 2, "piid": 1},  # read, notify, write (on)
         "device_fault": {"siid": 2, "piid": 2},  # read, notify (fault)
         "mode": {"siid": 2, "piid": 3},  # read, notify, write
