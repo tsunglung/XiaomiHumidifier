@@ -94,7 +94,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
             raise PlatformNotReady from ex
 
     if model in MODELS_MIOT:
-        humidifier = HumidifierMiot(host, token)
+        humidifier = HumidifierMiot(host, token, model=model)
     else:
         _LOGGER.error(
             "Unsupported device found! Please create an issue at "

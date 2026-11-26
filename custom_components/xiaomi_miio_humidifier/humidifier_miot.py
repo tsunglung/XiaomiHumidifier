@@ -222,11 +222,17 @@ class HumidifierMiot(MiotDevice):
         lazy_discover: bool = True,
         model: str = MODEL_DMAKER_DERH_22HT,
     ) -> None:
-        if model not in MIOT_MAPPING:
-            raise DeviceException("Invalid HumidifierMiot model: %s" % model)
-
         super().__init__(ip, token, start_id, debug, lazy_discover)
         self._model = model
+        # Use the mapping of the actual model. Models without an own mapping
+        # (e.g. dmaker.derh.50l) keep using the 22HT mapping as before.
+        if model in MIOT_MAPPING:
+            self.mapping = MIOT_MAPPING[model]
+        else:
+            _LOGGER.debug(
+                "No MIoT mapping for %s, using %s", model, MODEL_DMAKER_DERH_22HT
+            )
+            self.mapping = MIOT_MAPPING[MODEL_DMAKER_DERH_22HT]
 
     @command(
         default_output=format_output(
