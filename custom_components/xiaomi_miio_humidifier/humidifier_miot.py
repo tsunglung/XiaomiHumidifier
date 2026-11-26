@@ -72,6 +72,9 @@ MIOT_MAPPING = {
         "dry_after_off": {"siid": 7, "piid": 1},  # read, notify, write
         "dry_left_time": {"siid": 7, "piid": 2},  # read, notify
         "is_warming_up": {"siid": 7, "piid": 3},  # read, notify
+        "delay": {"siid": 8, "piid": 1},  # read, notify, write (turn-off timer on)
+        "delay_time": {"siid": 8, "piid": 2},  # read, notify, write (0-720 min)
+        "delay_remain_time": {"siid": 8, "piid": 3},  # read, notify (0-720 min)
         "toggle": {"siid": 7, "aiid": 1},
         "loop-mode": {"siid": 7, "aiid": 2},
         "reset-filter": {"siid": 7, "aiid": 3},
@@ -104,6 +107,13 @@ class SystemStatus(enum.Enum):
     Overload = 8
     Lack_Of_Refrigerant = 9
     Out_Of_Temperature = 10
+
+
+class LightMode(enum.Enum):
+    """ Display brightness (MIoT service 5, piid 2) """
+    Off = 0
+    Dim = 1
+    Bright = 2
 
 
 class PowerMode_V1(enum.Enum):
@@ -208,6 +218,37 @@ class HumidifierStatusMiot(DeviceStatus):
         """Is Warming Up"""
         return self.data["is_warming_up"]
 
+    @property
+    def water_tank_full(self):
+        """True if the device reports the water tank full fault."""
+        fault = self.data.get("device_fault")
+        if fault is None:
+            return None
+        return fault == SystemStatus.Water_Full.value
+
+    @property
+    def display_brightness(self):
+        """Display brightness as LightMode name."""
+        try:
+            return LightMode(self.data.get("light_mode")).name
+        except ValueError:
+            return None
+
+    @property
+    def delay(self) -> bool:
+        """Turn-off timer enabled"""
+        return self.data.get("delay")
+
+    @property
+    def delay_time(self) -> int:
+        """Turn-off timer duration in minutes"""
+        return self.data.get("delay_time")
+
+    @property
+    def delay_remain_time(self) -> int:
+        """Turn-off timer remaining minutes"""
+        return self.data.get("delay_remain_time")
+
 
 class HumidifierMiot(MiotDevice):
     """Interface for Smart Humidifier/Dehumidifie Miot"""
@@ -222,11 +263,17 @@ class HumidifierMiot(MiotDevice):
         lazy_discover: bool = True,
         model: str = MODEL_DMAKER_DERH_22HT,
     ) -> None:
-        if model not in MIOT_MAPPING:
-            raise DeviceException("Invalid HumidifierMiot model: %s" % model)
-
         super().__init__(ip, token, start_id, debug, lazy_discover)
         self._model = model
+        # Use the mapping of the actual model. Models without an own mapping
+        # (e.g. dmaker.derh.50l) keep using the 22HT mapping as before.
+        if model in MIOT_MAPPING:
+            self.mapping = MIOT_MAPPING[model]
+        else:
+            _LOGGER.debug(
+                "No MIoT mapping for %s, using %s", model, MODEL_DMAKER_DERH_22HT
+            )
+            self.mapping = MIOT_MAPPING[MODEL_DMAKER_DERH_22HT]
 
     @command(
         default_output=format_output(
@@ -294,6 +341,10 @@ class HumidifierMiot(MiotDevice):
         """Set Switch."""
 
         return self.set_property(switch, False)
+
+    def set_value(self, key: str, value):
+        """Set a mapped property to a value."""
+        return self.set_property(key, value)
 
     def on(self):
         """ Turn on """

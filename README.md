@@ -16,6 +16,7 @@ Credits: Thanks to [Rytilahti](https://github.com/rytilahti/python-miio) for all
 | Xiaomi Smart Humidifier/Dehumidifier    | dmaker.derh.22ht       | |
 | Xiaomi Smart Humidifier/Dehumidifier    | dmaker.derh.22l      | |
 | Xiaomi Smart Humidifier/Dehumidifier    | dmaker.derh.50l      | |
+| Xiaomi Smart Dehumidifier Lite    | xiaomi.derh.lite      | |
 
 ## Features
 
@@ -29,6 +30,16 @@ Supported models: `dmaker.derh.22ht`, `dmaker.derh.22l`, `dmaker.derh.50l`
 * Physical Controls Lock (on, off)
 * Buzzer (on, off)
 * Dry After off switch (on, off)
+* Display brightness select (Off, Dim, Bright)
+* Water tank full binary sensor (problem)
+
+### Xiaomi Smart Dehumidifier Lite (`xiaomi.derh.lite`)
+
+Same features as above, plus:
+
+* Turn-off delay switch (on, off)
+* Turn-off delay time (1-720 min)
+* Turn-off delay remaining time sensor
 
 ## Install
 
