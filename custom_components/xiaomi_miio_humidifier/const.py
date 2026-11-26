@@ -19,6 +19,15 @@ from homeassistant.components.number import (
     NumberMode,
 )
 
+from homeassistant.components.binary_sensor import (
+    BinarySensorDeviceClass,
+    BinarySensorEntityDescription,
+)
+
+from homeassistant.components.select import SelectEntityDescription
+
+from homeassistant.helpers.entity import EntityCategory
+
 from homeassistant.components.button import (
     ButtonDeviceClass,
     ButtonEntityDescription,
@@ -32,7 +41,7 @@ from homeassistant.const import (
 
 DEFAULT_NAME = "Xiaomi Smart Humidifier/Dehumidifier"
 DOMAIN = "xiaomi_miio_humidifier"
-DOMAINS = ["humidifier", "sensor", "switch", "button", "number"]
+DOMAINS = ["humidifier", "sensor", "binary_sensor", "switch", "button", "number", "select"]
 DATA_KEY = "xiaomi_humidifier_data"
 DATA_STATE = "state"
 DATA_DEVICE = "device"
@@ -188,5 +197,26 @@ HUMIDIFIER_NUMBERS_DELAY: tuple[NumberEntityDescription, ...] = (
         native_unit_of_measurement=UnitOfTime.MINUTES,
         mode=NumberMode.BOX,
         icon="mdi:timer-cog-outline",
+    ),
+)
+
+
+HUMIDIFIER_BINARY_SENSORS: tuple[BinarySensorEntityDescription, ...] = (
+    BinarySensorEntityDescription(
+        key="water_tank_full",
+        name="Water Tank Full",
+        device_class=BinarySensorDeviceClass.PROBLEM,
+        icon="mdi:cup-water",
+    ),
+)
+
+# MIoT property key -> select description; options are LightMode names
+HUMIDIFIER_SELECTS: tuple[SelectEntityDescription, ...] = (
+    SelectEntityDescription(
+        key="display_brightness",
+        name="Display Brightness",
+        options=["Off", "Dim", "Bright"],
+        entity_category=EntityCategory.CONFIG,
+        icon="mdi:brightness-6",
     ),
 )

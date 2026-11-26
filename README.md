@@ -30,6 +30,8 @@ Supported models: `dmaker.derh.22ht`, `dmaker.derh.22l`, `dmaker.derh.50l`
 * Physical Controls Lock (on, off)
 * Buzzer (on, off)
 * Dry After off switch (on, off)
+* Display brightness select (Off, Dim, Bright)
+* Water tank full binary sensor (problem)
 
 ### Xiaomi Smart Dehumidifier Lite (`xiaomi.derh.lite`)
 

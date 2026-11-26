@@ -109,6 +109,13 @@ class SystemStatus(enum.Enum):
     Out_Of_Temperature = 10
 
 
+class LightMode(enum.Enum):
+    """ Display brightness (MIoT service 5, piid 2) """
+    Off = 0
+    Dim = 1
+    Bright = 2
+
+
 class PowerMode_V1(enum.Enum):
     """ Power Mode """
     Smart = 0
@@ -210,6 +217,22 @@ class HumidifierStatusMiot(DeviceStatus):
     def is_warming_up(self) -> bool:
         """Is Warming Up"""
         return self.data["is_warming_up"]
+
+    @property
+    def water_tank_full(self):
+        """True if the device reports the water tank full fault."""
+        fault = self.data.get("device_fault")
+        if fault is None:
+            return None
+        return fault == SystemStatus.Water_Full.value
+
+    @property
+    def display_brightness(self):
+        """Display brightness as LightMode name."""
+        try:
+            return LightMode(self.data.get("light_mode")).name
+        except ValueError:
+            return None
 
     @property
     def delay(self) -> bool:
