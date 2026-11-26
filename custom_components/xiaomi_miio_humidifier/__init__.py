@@ -21,8 +21,10 @@ from miio import (  # pylint: disable=import-error
 )
 
 from .humidifier_miot import HumidifierMiot
+from .coordinator import XiaomiHumidifierCoordinator
 
 from .const import (
+    CONF_MAC,
     CONF_MODEL,
     DATA_KEY,
     DOMAIN,
@@ -127,10 +129,11 @@ async def async_update_options(hass: HomeAssistant, entry: ConfigEntry):
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry):
     """ check unload integration """
-    return all([
-        await hass.config_entries.async_forward_entry_unload(entry, domain)
-        for domain in DOMAINS
-    ])
+    unloaded = await hass.config_entries.async_unload_platforms(entry, DOMAINS)
+    if unloaded:
+        host = entry.options.get(CONF_HOST)
+        hass.data.get(DOMAIN, {}).pop(host, None)
+    return unloaded
 
 
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
@@ -189,7 +192,20 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
         )
         return False
 
-    hass.data[DOMAIN][host] = humidifier
+    coordinator = XiaomiHumidifierCoordinator(
+        hass,
+        entry,
+        humidifier,
+        entry.title,
+        model,
+        entry.unique_id,
+        entry.options.get(CONF_MAC),
+    )
+    await coordinator.async_fetch_info()
+    # Raises ConfigEntryNotReady when the device does not answer
+    await coordinator.async_config_entry_first_refresh()
+
+    hass.data[DOMAIN][host] = coordinator
 
     await _async_migrate_unique_ids(hass, entry)
 
