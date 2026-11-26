@@ -45,7 +45,6 @@ async def async_setup_entry(
 
         if model in MODELS_MIOT:
             for description in HUMIDIFIER_BUTTONS_V1:
-                unique_id = "{}_{}".format(unique_id.replace(" ", "_"), description.key)
                 entities.extend(
                     [XiaomiHumidifierButton(entry.options, description, name, unique_id, humidifier)]
                 )
