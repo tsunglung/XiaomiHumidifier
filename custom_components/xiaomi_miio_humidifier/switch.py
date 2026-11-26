@@ -23,6 +23,8 @@ from .const import (
     DATA_KEY,
     DOMAIN,
     HUMIDIFIER_SWITCHS_V1,
+    HUMIDIFIER_SWITCHS_DELAY,
+    MODELS_DELAY,
     MODELS_MIOT
 )
 
@@ -46,7 +48,10 @@ async def async_setup_entry(
         entities = []
 
         if model in MODELS_MIOT:
-            for description in HUMIDIFIER_SWITCHS_V1:
+            descriptions = HUMIDIFIER_SWITCHS_V1
+            if model in MODELS_DELAY:
+                descriptions = descriptions + HUMIDIFIER_SWITCHS_DELAY
+            for description in descriptions:
                 entities.extend(
                     [XiaomiHumidifierSwitch(entry.options, description, name, unique_id, humidifier)]
                 )

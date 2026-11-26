@@ -14,6 +14,11 @@ from homeassistant.components.switch import (
     SwitchEntityDescription,
 )
 
+from homeassistant.components.number import (
+    NumberEntityDescription,
+    NumberMode,
+)
+
 from homeassistant.components.button import (
     ButtonDeviceClass,
     ButtonEntityDescription,
@@ -27,7 +32,7 @@ from homeassistant.const import (
 
 DEFAULT_NAME = "Xiaomi Smart Humidifier/Dehumidifier"
 DOMAIN = "xiaomi_miio_humidifier"
-DOMAINS = ["humidifier", "sensor", "switch", "button"]
+DOMAINS = ["humidifier", "sensor", "switch", "button", "number"]
 DATA_KEY = "xiaomi_humidifier_data"
 DATA_STATE = "state"
 DATA_DEVICE = "device"
@@ -54,6 +59,11 @@ MODELS_MIOT = [
 ]
 
 MODELS_ALL_DEVICES = MODELS_MIOT
+
+# Models exposing the turn-off timer as MIoT service 8
+MODELS_DELAY = [
+    MODEL_XIAOMI_DERH_LITE,
+]
 
 DEFAULT_SCAN_INTERVAL = 30
 SCAN_INTERVAL = timedelta(seconds=DEFAULT_SCAN_INTERVAL)
@@ -147,4 +157,36 @@ HUMIDIFIER_BUTTONS_V1: tuple[ButtonEntityDescription, ...] = (
         name="Loop Mode",
         device_class=ButtonDeviceClass.RESTART,
     )
+)
+
+
+HUMIDIFIER_SENSORS_DELAY: tuple[XiaomiHumidifierSensorDescription, ...] = (
+    XiaomiHumidifierSensorDescription(
+        key="delay_remain_time",
+        name="Turn-off Delay Remaining",
+        native_unit_of_measurement=UnitOfTime.MINUTES,
+        icon="mdi:timer-sand"
+    ),
+)
+
+HUMIDIFIER_SWITCHS_DELAY: tuple[SwitchEntityDescription, ...] = (
+    SwitchEntityDescription(
+        key="delay",
+        name="Turn-off Delay",
+        device_class=SwitchDeviceClass.SWITCH,
+        icon="mdi:timer-off-outline",
+    ),
+)
+
+HUMIDIFIER_NUMBERS_DELAY: tuple[NumberEntityDescription, ...] = (
+    NumberEntityDescription(
+        key="delay_time",
+        name="Turn-off Delay Time",
+        native_min_value=1,
+        native_max_value=720,
+        native_step=1,
+        native_unit_of_measurement=UnitOfTime.MINUTES,
+        mode=NumberMode.BOX,
+        icon="mdi:timer-cog-outline",
+    ),
 )

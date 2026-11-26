@@ -72,6 +72,9 @@ MIOT_MAPPING = {
         "dry_after_off": {"siid": 7, "piid": 1},  # read, notify, write
         "dry_left_time": {"siid": 7, "piid": 2},  # read, notify
         "is_warming_up": {"siid": 7, "piid": 3},  # read, notify
+        "delay": {"siid": 8, "piid": 1},  # read, notify, write (turn-off timer on)
+        "delay_time": {"siid": 8, "piid": 2},  # read, notify, write (0-720 min)
+        "delay_remain_time": {"siid": 8, "piid": 3},  # read, notify (0-720 min)
         "toggle": {"siid": 7, "aiid": 1},
         "loop-mode": {"siid": 7, "aiid": 2},
         "reset-filter": {"siid": 7, "aiid": 3},
@@ -208,6 +211,21 @@ class HumidifierStatusMiot(DeviceStatus):
         """Is Warming Up"""
         return self.data["is_warming_up"]
 
+    @property
+    def delay(self) -> bool:
+        """Turn-off timer enabled"""
+        return self.data.get("delay")
+
+    @property
+    def delay_time(self) -> int:
+        """Turn-off timer duration in minutes"""
+        return self.data.get("delay_time")
+
+    @property
+    def delay_remain_time(self) -> int:
+        """Turn-off timer remaining minutes"""
+        return self.data.get("delay_remain_time")
+
 
 class HumidifierMiot(MiotDevice):
     """Interface for Smart Humidifier/Dehumidifie Miot"""
@@ -300,6 +318,10 @@ class HumidifierMiot(MiotDevice):
         """Set Switch."""
 
         return self.set_property(switch, False)
+
+    def set_value(self, key: str, value):
+        """Set a mapped property to a value."""
+        return self.set_property(key, value)
 
     def on(self):
         """ Turn on """
