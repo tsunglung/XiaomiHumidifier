@@ -1,5 +1,6 @@
 """The Xiaomi Smart Humidifier/Dehumidifier component."""
 # pylint: disable=import-error
+import inspect
 import logging
 
 import homeassistant.helpers.config_validation as cv
@@ -66,7 +67,7 @@ def _legacy_unique_id_map(entry: ConfigEntry) -> dict:
     return mapping
 
 
-def _migrate_unique_ids(hass: HomeAssistant, entry: ConfigEntry) -> None:
+async def _async_migrate_unique_ids(hass: HomeAssistant, entry: ConfigEntry) -> None:
     """Move registry entries with legacy unique_ids to the current format.
 
     Keeps entity_ids, names and settings. Skips an entry when an entity
@@ -94,13 +95,17 @@ def _migrate_unique_ids(hass: HomeAssistant, entry: ConfigEntry) -> None:
         )
         return {"new_unique_id": new_id}
 
-    er.async_migrate_entries(hass, entry.entry_id, _update)
+    # async_migrate_entries became a coroutine in newer HA versions
+    result = er.async_migrate_entries(hass, entry.entry_id, _update)
+    if inspect.isawaitable(result):
+        await result
 
     # The old switch/button code also registered its chained unique_ids as
     # device identifiers. Reduce the device to its real identifier.
     dev_reg = dr.async_get(hass)
-    device = dev_reg.async_get_device(identifiers={(DOMAIN, entry.unique_id)})
-    if device is not None:
+    for device in dr.async_entries_for_config_entry(dev_reg, entry.entry_id):
+        if (DOMAIN, entry.unique_id) not in device.identifiers:
+            continue
         own = {i for i in device.identifiers if i[0] == DOMAIN}
         if own != {(DOMAIN, entry.unique_id)}:
             other = {i for i in device.identifiers if i[0] != DOMAIN}
@@ -186,7 +191,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
 
     hass.data[DOMAIN][host] = humidifier
 
-    _migrate_unique_ids(hass, entry)
+    await _async_migrate_unique_ids(hass, entry)
 
     # init setup for each supported domains
     await hass.config_entries.async_forward_entry_setups(entry, DOMAINS)
